@@ -1,0 +1,33 @@
+# Simple RViz config for Hospital Sample Carrier Bot
+Panels:
+  - Class: rviz/Displays
+    Name: Displays
+  - Class: rviz/Tool Properties
+    Name: Tool Properties
+
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Name: RobotModel
+      Class: rviz/RobotModel
+      Enabled: true
+      Robot Description: robot_description
+      Show Visual: true
+      Show Collision: false
+      Alpha: 1.0
+    - Name: TF
+      Class: rviz/TF
+      Enabled: true
+    - Name: Grid
+      Class: rviz/Grid
+      Enabled: true
+  Global Options:
+    Fixed Frame: map
+
+Views:
+  Current:
+    Class: rviz/Orbit
+    Focal Point: [0, 0, 0]
+    Distance: 1.2
+    Pitch: 0.5
+    Yaw: 1.0

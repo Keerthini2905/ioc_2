@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>hospital_sample_carrier</name>
+  <version>0.0.1</version>
+  <description>Hospital Sample Carrier Bot - URDF model with RViz visualization</description>
+
+  <maintainer email="keerthi@example.com">Keerthini</maintainer>
+  <license>MIT</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>roscpp</depend>
+  <depend>rospy</depend>
+  <depend>std_msgs</depend>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>rviz</depend>
+
+  <export>
+    <build_type>catkin</build_type>
+  </export>
+</package>

@@ -1,0 +1,16 @@
+<launch>
+  <!-- Load URDF into parameter server -->
+  <param name="robot_description" command="$(find xacro)/xacro '$(find hospital_sample_carrier)/urdf/hospital_sample_carrier.urdf'" />
+
+  <!-- robot_state_publisher publishes TF frames -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" output="screen">
+    <param name="publish_frequency" type="double" value="50.0"/>
+    <param name="use_tf_static" type="bool" value="true"/>
+  </node>
+
+  <!-- joint_state_publisher_gui for moving the drawer (prismatic) manually -->
+  <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui" output="screen"/>
+
+  <!-- Launch RViz with provided config -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find hospital_sample_carrier)/rviz/hospital_sample_carrier.rviz" output="screen"/>
+</launch>

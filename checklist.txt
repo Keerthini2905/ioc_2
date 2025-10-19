@@ -1,0 +1,64 @@
+Hospital Sample Carrier ROS Package Checklist
+---------------------------------------------
+
+[ ] 1. URDF/XACRO File
+    - File: urdf/hospital_sample_carrier.urdf
+    - Robot base link defined with proper visual, collision, and inertial properties
+    - Four wheels (front/back, left/right) and corresponding continuous joints
+    - Sliding drawer compartment:
+        [ ] compartment_base and compartment_drawer links
+        [ ] prismatic joint 'joint_drawer_slide' with limits set
+    - Three sample slots (slot_1, slot_2, slot_3) visually attached to drawer
+    - RFID sensor mount and frame
+    - Status display panel link and joint
+    - Optional TF root (map link) defined
+    - All joints have proper parent-child links and axis/origin defined
+
+[ ] 2. Launch File
+    - File: launch/hospital_sample_carrier.launch
+    - Loads URDF into ROS parameter server
+    - robot_state_publisher node included
+    - joint_state_publisher_gui node included for manual drawer control
+    - RViz node launched with custom RViz config
+    - Parameters: publish_frequency, use_tf_static
+
+[ ] 3. RViz Configuration
+    - File: rviz/hospital_sample_carrier.rviz
+    - Displays: RobotModel, TF, Grid
+    - RobotModel:
+        [ ] Robot Description: robot_description
+        [ ] Visual enabled, Collision disabled
+        [ ] Alpha set correctly
+    - Fixed Frame: map
+    - Camera/View settings configured
+
+[ ] 4. CMake Configuration
+    - File: CMakeLists.txt
+    - Minimum CMake version set
+    - Project name matches package
+    - Required dependencies included: roscpp, rospy, std_msgs, urdf, xacro, robot_state_publisher, joint_state_publisher(_gui), rviz
+    - catkin_package() invoked
+    - include_directories() uses ${catkin_INCLUDE_DIRS}
+    - Install directories for launch, urdf, and rviz provided
+
+[ ] 5. Package Manifest
+    - File: package.xml
+    - Name, version, description, maintainer, and license set
+    - buildtool_depend: catkin
+    - All runtime dependencies listed
+    - <export> section with build_type set
+
+[ ] 6. Documentation
+    - README.md or equivalent document
+    - Overview of robot purpose and functionality
+    - Features listed (4-wheel base, drawer, RFID, display)
+    - ROS1 compatibility mentioned
+    - Folder structure explained
+    - Instructions for launching and visualizing in RViz
+
+[ ] 7. General Verification
+    - Ensure all file paths in launch and RViz configs are correct
+    - Ensure xacro/URDF syntax is valid
+    - All joints move as expected (drawer slides, wheels rotate)
+    - Robot appears correctly in RViz with visual elements
+    - No missing dependencies in package.xml or CMakeLists.txt
