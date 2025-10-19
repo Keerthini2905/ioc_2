@@ -1,0 +1,207 @@
+<?xml version="1.0"?>
+<robot name="hospital_sample_carrier" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- ============================
+       Base (chassis)
+       ============================ -->
+  <link name="base_link">
+    <visual>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.5 0.35 0.1"/>
+      </geometry>
+      <material name="navy">
+        <color rgba="0.05 0.2 0.6 1.0"/>
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0.05"/>
+      <geometry>
+        <box size="0.5 0.35 0.1"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="8.0"/>
+      <inertia ixx="0.2" ixy="0.0" ixz="0.0"
+               iyy="0.25" iyz="0.0"
+               izz="0.3"/>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+    </inertial>
+  </link>
+
+  <!-- ============================
+       Wheels
+       ============================ -->
+  <link name="wheel_front_left">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 1.5708"/>
+      <geometry>
+        <cylinder radius="0.06" length="0.03"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="wheel_front_right"/>
+  <link name="wheel_back_left"/>
+  <link name="wheel_back_right"/>
+
+  <joint name="joint_wheel_front_left" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_front_left"/>
+    <origin xyz="0.18 0.14 0.03" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="joint_wheel_front_right" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_front_right"/>
+    <origin xyz="0.18 -0.14 0.03" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="joint_wheel_back_left" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_back_left"/>
+    <origin xyz="-0.18 0.14 0.03" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <joint name="joint_wheel_back_right" type="continuous">
+    <parent link="base_link"/>
+    <child link="wheel_back_right"/>
+    <origin xyz="-0.18 -0.14 0.03" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+  </joint>
+
+  <!-- ============================
+       Payload Compartment (sliding drawer)
+       ============================ -->
+  <link name="compartment_base">
+    <visual>
+      <origin xyz="0 0 0.12" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.34 0.26 0.08"/>
+      </geometry>
+      <material name="light_grey">
+        <color rgba="0.85 0.85 0.85 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- drawer (child) slides forward/back -->
+  <link name="compartment_drawer">
+    <visual>
+      <origin xyz="0 0 0.04" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.32 0.24 0.06"/>
+      </geometry>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint_drawer_slide" type="prismatic">
+    <parent link="compartment_base"/>
+    <child link="compartment_drawer"/>
+    <origin xyz="0 0 0.08" rpy="0 0 0"/>
+    <axis xyz="1 0 0"/>
+    <limit lower="-0.15" upper="0.05" effort="5.0" velocity="0.1"/>
+  </joint>
+
+  <joint name="joint_base_to_compartment" type="fixed">
+    <parent link="base_link"/>
+    <child link="compartment_base"/>
+    <origin xyz="0 0 0.05" rpy="0 0 0"/>
+  </joint>
+
+  <!-- inside: three labeled sample slots (visual only) -->
+  <link name="slot_1">
+    <visual>
+      <origin xyz="0.08 0.06 0.07" rpy="0 0 0"/>
+      <geometry><box size="0.06 0.08 0.02"/></geometry>
+      <material name="slot_blue"><color rgba="0.2 0.5 1 1"/></material>
+    </visual>
+  </link>
+
+  <link name="slot_2">
+    <visual>
+      <origin xyz="0 0 0.07" rpy="0 0 0"/>
+      <geometry><box size="0.06 0.08 0.02"/></geometry>
+      <material name="slot_green"><color rgba="0.2 1 0.5 1"/></material>
+    </visual>
+  </link>
+
+  <link name="slot_3">
+    <visual>
+      <origin xyz="-0.08 -0.06 0.07" rpy="0 0 0"/>
+      <geometry><box size="0.06 0.08 0.02"/></geometry>
+      <material name="slot_red"><color rgba="1 0.4 0.4 1"/></material>
+    </visual>
+  </link>
+
+  <!-- link slots to drawer (fixed visuals only) -->
+  <joint name="j_slot1" type="fixed"><parent link="compartment_drawer"/><child link="slot_1"/><origin xyz="0 0 0" rpy="0 0 0"/></joint>
+  <joint name="j_slot2" type="fixed"><parent link="compartment_drawer"/><child link="slot_2"/><origin xyz="0 0 0" rpy="0 0 0"/></joint>
+  <joint name="j_slot3" type="fixed"><parent link="compartment_drawer"/><child link="slot_3"/><origin xyz="0 0 0" rpy="0 0 0"/></joint>
+
+  <!-- ============================
+       RFID Antenna (sensor frame)
+       ============================ -->
+  <link name="rfid_mount">
+    <visual>
+      <origin xyz="0 0 0.18" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.02" radius="0.05"/>
+      </geometry>
+      <material name="black"><color rgba="0 0 0 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="j_base_to_rfid" type="fixed">
+    <parent link="base_link"/>
+    <child link="rfid_mount"/>
+    <origin xyz="0 -0.12 0.12" rpy="0 0 0"/>
+  </joint>
+
+  <!-- small frame to show sensor location -->
+  <link name="rfid_frame">
+    <visual>
+      <origin xyz="0 -0.20 0.18" rpy="0 0 0"/>
+      <geometry><box size="0.02 0.12 0.25"/></geometry>
+      <material name="cyan"><color rgba="0.0 0.8 0.9 0.6"/></material>
+    </visual>
+  </link>
+
+  <joint name="j_rfid_frame" type="fixed">
+    <parent link="rfid_mount"/>
+    <child link="rfid_frame"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ============================
+       Status LED / Display
+       ============================ -->
+  <link name="status_display">
+    <visual>
+      <origin xyz="0.22 0 0.13" rpy="0 0 0"/>
+      <geometry><box size="0.12 0.04 0.06"/></geometry>
+      <material name="display"><color rgba="0.05 0.8 0.05 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="j_display" type="fixed">
+    <parent link="base_link"/>
+    <child link="status_display"/>
+    <origin xyz="0.22 0 0.13" rpy="0 0 0"/>
+  </joint>
+
+  <!-- ============================
+       TF root (optional visual anchor)
+       ============================ -->
+  <link name="map"/>
+  <joint name="map_to_base" type="fixed">
+    <parent link="map"/>
+    <child link="base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+</robot>
